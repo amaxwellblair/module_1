@@ -20,6 +20,8 @@ class NightWriterTest < Minitest::Test
 
   def test_alphabet
     assert_equal Machine::Alphabet["a"], __
+    assert_equal Machine::Alphabet["A"], __
+    assert_equal Machine::Alphabet[""], __
   end
 
   def test_file_io

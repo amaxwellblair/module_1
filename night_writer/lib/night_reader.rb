@@ -24,7 +24,11 @@ class NightReader
       second_line += letter[1]
       third_line += letter[2]
     end
-    return [first_line,second_line,third_line]
+    File.open(ARGV[1],'w') do |f|
+      3.times do |i|
+        f.write("#{first_line}\n#{second_line}\n#{third_line}\n")
+      end
+    end
   end
 
 
@@ -35,7 +39,8 @@ class NightReader
       @raw_braille << Alphabet::English[char.to_sym]
     end
 
-    puts output_text
+    output_text
+    output_text
   end
 
 end

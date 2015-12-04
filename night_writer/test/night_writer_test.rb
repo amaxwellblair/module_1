@@ -5,12 +5,11 @@ class NightWriterTest < Minitest::Test
   include Alphabet
 
   def setup
-    skip
-    writer = Machine.new("test.txt")
+    # writer = Machine.new("test.txt")
   end
 
   def test_class
-
+    skip
     assert_equal Machine, writer.class
   end
 

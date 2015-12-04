@@ -3,6 +3,6 @@ require 'alphabet'
 
 
 class NightReaderTest < Minitest::Test
-  include 'alphabet'
+  include Alphabet
 
 end

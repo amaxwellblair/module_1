@@ -19,6 +19,7 @@ class NightWriterTest < Minitest::Test
     assert_equal writer.compute("a"), (__)
     assert_equal writer.compute("hello world"), (__)
     assert_equal writer.compute("Hello World"), (__)
+    assert_equal writer.compute("Hello World \n"), (__)
     assert_equal writer.compute, (__)
   end
 

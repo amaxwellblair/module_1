@@ -53,12 +53,12 @@ if __FILE__ == $0
   third_line = braille_lines[2]
 
   File.open(output_file,'w') do |f|
-    line_count = (x.raw_braille.length/CharacterLimit)+1
+    line_count = (x.raw_braille.length*2/CharacterLimit)+1
     line_count.times do |i|
       f.write("#{first_line[(i*CharacterLimit)..((i+1)*CharacterLimit-1)]}\n"+
               "#{second_line[((i*CharacterLimit)..((i+1)*CharacterLimit-1))]}\n"+
               "#{third_line[(i*CharacterLimit)..((i+1)*CharacterLimit-1)]}\n")
     end
-    puts "Created 'braille.txt' containing #{x.tally} characters"
+    puts "Created #{ARGV[1]} containing #{x.tally} characters"
   end
 end

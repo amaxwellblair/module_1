@@ -5,9 +5,8 @@ require 'pry'
 CharacterLimit = 80
 
 class NightWriter
-  attr_accessor :raw_text, :raw_braille
+  attr_accessor :raw_text, :raw_braille, :tally
   include Alphabet
-
 
   def initialize(str)
     @raw_text = str
@@ -17,8 +16,6 @@ class NightWriter
     first_line = ""
     second_line = ""
     third_line = ""
-    test_output = []
-
     raw_braille.each do |letter|
       first_line += letter[0]
       second_line += letter[1]
@@ -28,10 +25,17 @@ class NightWriter
   end
 
   def compute
+    @tally = 0
     @raw_text = raw_text.gsub("\n", "")
     @raw_braille = []
     @raw_text.each_char do |char|
-      @raw_braille << Alphabet::English[char.to_sym]
+      if char =~ /[a-zA-Z]/ && char == char.upcase
+        @raw_braille << Alphabet::English["cap"]
+        @raw_braille << Alphabet::English[char.downcase]
+      else
+        @raw_braille << Alphabet::English[char.downcase]
+      end
+      @tally += 1
     end
 
     output_text
@@ -55,5 +59,6 @@ if __FILE__ == $0
               "#{second_line[((i*CharacterLimit)..((i+1)*CharacterLimit-1))]}\n"+
               "#{third_line[(i*CharacterLimit)..((i+1)*CharacterLimit-1)]}\n")
     end
+    puts "Created 'braille.txt' containing #{x.tally} characters"
   end
 end

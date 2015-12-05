@@ -7,10 +7,12 @@ class NightReaderTest < Minitest::Test
   include Alphabet
 
   def test_class
+    skip
     assert_equal NightReader, reader.class
   end
 
   def test_machine
+    skip
     assert_equal NightReader.new("").compute, ("\n\n\n")
     assert_equal NightReader.new("a").compute, ("0.\n..\n..")
     assert_equal NightReader.new("hello world").compute, ("0.0.0.0.0....00.0.0.00\n")
@@ -20,6 +22,7 @@ class NightReaderTest < Minitest::Test
   end
 
   def test_alphabet
+    skip
     assert_equal 34, Alphabet::Braille.count
     assert_equal 34, Alphabet::English.count
   end

@@ -1,4 +1,4 @@
-$: << '.'
+$: << '~/turing/1module/night_writer/lib'
 
 require 'alphabet'
 require 'pry'

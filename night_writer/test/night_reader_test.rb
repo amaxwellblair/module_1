@@ -7,18 +7,19 @@ class NightReaderTest < Minitest::Test
   include Alphabet
 
   def test_class
-    skip
+    reader = NightReader.new("")
     assert_equal NightReader, reader.class
   end
 
   def test_machine
-    skip
-    assert_equal NightReader.new("").compute, ("\n\n\n")
-    assert_equal NightReader.new("a").compute, ("0.\n..\n..")
-    assert_equal NightReader.new("hello world").compute, ("0.0.0.0.0....00.0.0.00\n")
-    assert_equal NightReader.new("Hello World").compute, (__)
-    assert_equal NightReader.new("Hello World \n").compute, (__)
-    assert_equal NightReader.new("Paragraph").compute, (__)
+    str = ""
+    # assert_equal NightReader.new("\n\n\n").compute, str
+    assert_equal NightReader.new("0.\n00\n..\n").compute, "h"
+    assert_equal NightReader.new("..\n..\n.0\n"+".0\n00\n..\n").compute, ("H")
+    # assert_equal NightReader.new("hello world").compute, ("0.0.0.0.0....00.0.0.00\n")
+    # assert_equal NightReader.new("Hello World").compute, (__)
+    # assert_equal NightReader.new("Hello World \n").compute, (__)
+    # assert_equal NightReader.new("Paragraph").compute, (__)
   end
 
   def test_alphabet

@@ -1,36 +1,31 @@
-$: << '.'  # => ["/Users/maxwell/.rvm/gems/ruby-2.2.1/gems/seeing_is_believing-3.0.0.beta.6/lib", "/Users/maxwell/.rvm/gems/ruby-2.2.1/gems/seeing_is_believing-3.0.0.beta.6/lib", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/site_ruby/2.2.0", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/site_ruby/2.2.0/x86_64-darwin14", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/site_ruby", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/vendor_ruby/2.2.0", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/vendor_ruby/2.2.0/x86_64-darwin14", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/vendor_ruby", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/x86_64-darwin14", "."]
+$: << '.'
 
-require 'alphabet'  # ~> LoadError: cannot load such file -- alphabet
+require 'alphabet'
 require 'pry'
-
-
-output_file = ARGV[1]
+CharacterLimit = 80
 
 class NightReader
   attr_accessor :raw_text, :raw_braille
   include Alphabet
 
-  def initialize
-    @raw_text = File.read(ARGV[0])
 
+  def initialize(str)
+    @raw_text = str
   end
 
   def output_text
     first_line = ""
     second_line = ""
     third_line = ""
-    @raw_braille.each do |letter|
+    test_output = []
+
+    raw_braille.each do |letter|
       first_line += letter[0]
       second_line += letter[1]
       third_line += letter[2]
     end
-    File.open(ARGV[1],'w') do |f|
-      3.times do |i|
-        f.write("#{first_line}\n#{second_line}\n#{third_line}\n")
-      end
-    end
+    return [first_line, second_line, third_line]
   end
-
 
   def compute
     @raw_text = raw_text.gsub("\n", "")
@@ -40,22 +35,25 @@ class NightReader
     end
 
     output_text
-    output_text
   end
 
 end
 
+if __FILE__ == $0
+  input_file = ARGV[0]
+  output_file = ARGV[1]
+  x = NightReader.new(File.read(input_file))
+  braille_lines = x.compute
+  first_line = braille_lines[0]
+  second_line = braille_lines[1]
+  third_line = braille_lines[2]
 
-x = NightReader.new
-
-x.compute
-
-
-p x.raw_braille
-
-# ~> LoadError
-# ~> cannot load such file -- alphabet
-# ~>
-# ~> /Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/site_ruby/2.2.0/rubygems/core_ext/kernel_require.rb:54:in `require'
-# ~> /Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/site_ruby/2.2.0/rubygems/core_ext/kernel_require.rb:54:in `require'
-# ~> /Users/maxwell/turing/1module/night_writer/lib/night_reader.rb:3:in `<main>'
+  File.open(output_file,'w') do |f|
+    line_count = (x.raw_braille.length/CharacterLimit)+1
+    line_count.times do |i|
+      f.write("#{first_line[(i*CharacterLimit)..((i+1)*CharacterLimit-1)]}\n"+
+              "#{second_line[((i*CharacterLimit)..((i+1)*CharacterLimit-1))]}\n"+
+              "#{third_line[(i*CharacterLimit)..((i+1)*CharacterLimit-1)]}\n")
+    end
+  end
+end

@@ -1,4 +1,4 @@
-$: << '~/turing/1module/night_writer/lib'
+$LOAD_PATH.unshift(__dir__)
 
 require 'alphabet'
 require 'pry'
@@ -43,7 +43,7 @@ class NightWriter
 
 end
 
-if __FILE__ == $0
+if __FILE__ == $PROGRAM_NAME
   input_file = ARGV[0]
   output_file = ARGV[1]
   x = NightWriter.new(File.read(input_file))

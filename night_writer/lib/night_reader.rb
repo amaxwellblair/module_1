@@ -1,4 +1,4 @@
-$: << '~/turing/1module/night_writer/lib'
+$LOAD_PATH.unshift(__dir__)
 
 require 'alphabet'
 require 'pry'
@@ -52,7 +52,6 @@ class NightReader
     self.raw_braille = raw_braille.split("\n")
     formated_braille = ["","",""]
     i = 0
-    puts raw_braille
     while i < raw_braille.length
       formated_braille[0] += raw_braille[i]
       formated_braille[1] += raw_braille[i+1]
@@ -68,7 +67,7 @@ class NightReader
 
 end
 
-if __FILE__ == $0
+if __FILE__ == $PROGRAM_NAME
   input_file = ARGV[0]
   output_file = ARGV[1]
   x = NightReader.new(File.read(input_file))

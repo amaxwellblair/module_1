@@ -5,49 +5,55 @@ require 'pry'
 CharacterLimit = 80
 
 class NightWriter
-  attr_accessor :raw_text, :raw_braille, :tally
+  attr_accessor :raw_text, :tally
   include Alphabet
 
   def initialize(str)
     self.raw_text = str
   end
 
+  def preformat_input_text(text)
+    text.gsub("\n", "")
+  end
+
   def compute
     self.tally = 0
     num_flag = 0
-    self.raw_text = raw_text.gsub("\n", "")
-    self.raw_braille = []
+    # self.raw_text = raw_text.gsub("\n", "")
+    preformatted = preformat_input_text(raw_text)
+    raw_braille = []
     # sub_contractions #=> Didn't have time to implement
-    self.raw_text.each_char.with_index do |char, i|
+    preformatted.each_char.with_index do |char, i|
       if char =~ /[a-zA-Z]/ && char == char.upcase
-        self.raw_braille << Alphabet::English["cap"]
-        self.raw_braille << Alphabet::English[char.downcase]
+        raw_braille << Alphabet::English["cap"]
+        raw_braille << Alphabet::English[char.downcase]
+        # maybe? Alphabet::English["cap"] + Alphabet::English[char.downcase]
       elsif char =~ /[0-9]/
         if num_flag == 0
-          self.raw_braille << Alphabet::English["#"]
-          self.raw_braille << Alphabet::EnglishNumber[char]
+          raw_braille << Alphabet::English["#"]
+          raw_braille << Alphabet::EnglishNumber[char]
           num_flag = 1
         else
-          self.raw_braille << Alphabet::EnglishNumber[char]
+          raw_braille << Alphabet::EnglishNumber[char]
         end
       elsif char == " " && num_flag == 1
-        self.raw_braille << Alphabet::English[char]
+        raw_braille << Alphabet::English[char]
         num_flag = 0
       else
-        self.raw_braille << Alphabet::English[char.downcase]
+        raw_braille << Alphabet::English[char.downcase]
       end
       self.tally += 1
     end
-    output_text
+    output_text(raw_braille)
   end
 
   private
 
-  def output_text
+  def output_text(raw)
     first_line = ""
     second_line = ""
     third_line = ""
-    raw_braille.each do |letter|
+    raw.each do |letter|
       first_line += letter[0]
       second_line += letter[1]
       third_line += letter[2]

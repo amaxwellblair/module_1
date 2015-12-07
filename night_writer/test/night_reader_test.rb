@@ -15,11 +15,8 @@ class NightReaderTest < Minitest::Test
     str = ""
     assert_equal NightReader.new("\n\n\n").compute, str
     assert_equal NightReader.new("0.\n00\n..\n").compute, "h"
-    assert_equal NightReader.new("..\n..\n.0\n.0\n00\n..\n").compute, "H"
-    # assert_equal NightReader.new("hello world").compute, ("0.0.0.0.0....00.0.0.00\n")
-    # assert_equal NightReader.new("Hello World").compute, (__)
-    # assert_equal NightReader.new("Hello World \n").compute, (__)
-    # assert_equal NightReader.new("Paragraph").compute, (__)
+    assert_equal NightReader.new(".00.\n.0..\n00..\n").compute, "1"
+    #assert_equal NightReader.new("..\n..\n.0\n.0\n.0\n.0\n").compute, "L"
   end
 
   def test_alphabet

@@ -62,4 +62,33 @@ then store grabbed letters into an array
 
 write array into to english.txt
 
-7.
+Writing numbers in english and braille
+
+When a number is read in a REGEX will pick up the pattern. Once it is read in
+a pound braille will be inserted into the baille. When a number is picked up
+the code will go into a separate loop (putting in numbers from the number alphabet)
+until a space is picked up.
+
+Reading numbers from braille to english
+
+when the braille # is read it will then place the braille reader into a separate
+loop that will parse out numbers until a space shows up. Once a space shows up
+the process will end
+
+writing contractions
+
+before text is processed contractions will be found and replaced with their braille
+equivalent character ("but" would be "b"). Some contractions do not have a specific
+letter representation. I may use capitalization or other ASCII equivalents. When
+transforming all of the text to braille single letters (" b ") will be found using
+each_with_index allowing for the code to look ahead one at a time.
+
+capital letters will bring problems. 
+
+reading contractions
+
+single letter braille items will be found using each_with_index then sorted directly
+into a different alphabet. This will can and will mess up the tally count. Tally
+will need to be directly modified by the length of the contraction. This can be
+accomplished by modifying tally and skipping it over. Or just adding 1 less then
+the actually tally and let iteration count the final.

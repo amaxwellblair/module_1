@@ -29,11 +29,15 @@ class NightWriterTest < Minitest::Test
     assert_equal NightWriter.new("Hello World!").compute, (["..0.0.0.0.0......00.0.0.00..",
                                                             "..00.00.0..0....00.0000..000",
                                                             ".0....0.0.0....0.00.0.0...0."])
+    assert_equal NightWriter.new("hello 123 dog").compute, (["0.0.0.0.0....00.0.00..000.00",
+                                                             "00.00.0..0...0..0......0.000",
+                                                             "....0.0.0...00..........0..."])
+
   end
 
   def test_alphabet
-    assert_equal 34, Alphabet::Braille.count
-    assert_equal 34, Alphabet::English.count
+    assert_equal 35, Alphabet::Braille.count
+    assert_equal 35, Alphabet::English.count
   end
 
 end

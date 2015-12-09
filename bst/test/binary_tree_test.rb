@@ -6,15 +6,15 @@ require 'pry'
 require 'binary_tree'
 
 
-class BinaryTreeTest < Minitest::Test
+class BinarySearchTreeTest < Minitest::Test
   attr_accessor :tree
 
   def setup
-    @tree = BinaryTree.new
+    @tree = BinarySearchTree.new
   end
 
   def test_create_tree
-    assert_equal BinaryTree, tree.class
+    assert_equal BinarySearchTree, tree.class
   end
 
   def test_root
@@ -23,7 +23,7 @@ class BinaryTreeTest < Minitest::Test
 
   def test_create_node
     tree.insert(2)
-    assert_equal BinaryTree::Struct::Node, tree.rootie.class
+    assert_equal BinarySearchTree::Struct::Node, tree.rootie.class
   end
 
   def test_root_value
@@ -54,13 +54,13 @@ class BinaryTreeTest < Minitest::Test
   def test_root_left_link_for_node
     tree.insert(2)
     tree.insert(1)
-    assert_equal BinaryTree::Struct::Node, tree.rootie.left.class
+    assert_equal BinarySearchTree::Struct::Node, tree.rootie.left.class
   end
 
   def test_root_right_link_for_node
     tree.insert(2)
     tree.insert(3)
-    assert_equal BinaryTree::Struct::Node, tree.rootie.right.class
+    assert_equal BinarySearchTree::Struct::Node, tree.rootie.right.class
   end
 
   def test_insert_node_left_data
@@ -260,19 +260,16 @@ class BinaryTreeTest < Minitest::Test
     assert_equal nil, tree.include?("a")
   end
 
-  def test_leaves_zero
-    skip
-    assert_equal 0, tree.leaves
+  def test_leaves_nil
+    assert_equal nil, tree.leaves
   end
 
   def test_leaves_zero_with_root
-    skip
     tree.insert(1)
-    assert_equal 0, tree.leaves
+    assert_equal 1, tree.leaves
   end
 
   def test_leaves_one
-    skip
     tree.insert(2)
     tree.insert(1)
     assert_equal 1, tree.leaves

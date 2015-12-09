@@ -1,4 +1,5 @@
 $LOAD_PATH.unshift(__dir__)
+$LOAD_PATH.unshift("~/turing/1module/bst/lib/")
 
 require 'minitest'
 require 'pry'
@@ -107,7 +108,6 @@ class BinaryTreeTest < Minitest::Test
   end
 
   def test_insert_node_deep_right
-    skip
     tree.insert(3)
     tree.insert(4)
     tree.insert(6)
@@ -116,7 +116,6 @@ class BinaryTreeTest < Minitest::Test
   end
 
   def test_insert_node_deep_left
-    skip
     tree.insert(7)
     tree.insert(6)
     tree.insert(5)
@@ -124,64 +123,81 @@ class BinaryTreeTest < Minitest::Test
     assert_equal true, tree.include?(4)
   end
 
+  def test_include_root_nodes
+    tree.insert(1)
+    assert_equal true, tree.include?(1)
+  end
+
   def test_include_two_nodes
-    skip
     tree.insert(1)
     tree.insert(2)
     assert_equal true, tree.include?(2)
   end
 
   def test_not_include_two_nodes
-    skip
     tree.insert(1)
     tree.insert(3)
     assert_equal false, tree.include?(2)
   end
 
+
   def test_include_three_nodes
-    skip
-    tree.insert(1)
     tree.insert(2)
+    tree.insert(1)
     tree.insert(3)
     assert_equal true, tree.include?(3)
   end
 
   def test_not_include_three_nodes
-    skip
     tree.insert(1)
     tree.insert(2)
     tree.insert(3)
     assert_equal false, tree.include?(4)
   end
 
+  def test_include_level_two
+    tree.insert(4)
+    tree.insert(3)
+    tree.insert(1)
+    tree.insert(2)
+    tree.insert(5)
+    tree.insert(6)
+    assert_equal true, tree.include?(2)
+  end
+
   def test_depth_of_level_zero
-    skip
     tree.insert(1)
     assert_equal 0, tree.depth_of(1)
   end
 
   def test_depth_of_level_one
-    skip
     tree.insert(1)
     tree.insert(2)
     assert_equal 1, tree.depth_of(2)
   end
 
   def test_depth_of_level_two
-    skip
     tree.insert(3)
     tree.insert(2)
     tree.insert(1)
-    assert_equal 2, tree.depth_of(3)
+    assert_equal 2, tree.depth_of(1)
+  end
+
+  def test_depth_of_level_three
+    tree.insert(3)
+    tree.insert(4)
+    tree.insert(1)
+    tree.insert(2)
+    tree.insert(5)
+    tree.insert(6)
+    assert_equal 3, tree.depth_of(6)
   end
 
   def test_sort_nil
-    skip
     assert_equal nil, tree.sort
   end
 
   def test_sort_one
-    skip
     tree.insert(5)
     assert_equal [5], tree.sort
   end
@@ -194,15 +210,13 @@ class BinaryTreeTest < Minitest::Test
   end
 
   def test_sort_three
-    skip
     tree.insert(5)
     tree.insert(4)
     tree.insert(6)
     assert_equal [4,5,6], tree.sort
   end
-
+  # meta(current: true)
   def test_sort_two_deep
-    skip
     tree.insert(5)
     tree.insert(4)
     tree.insert(6)
@@ -211,7 +225,6 @@ class BinaryTreeTest < Minitest::Test
   end
 
   def test_sort_three_deep
-    skip
     tree.insert(5)
     tree.insert(4)
     tree.insert(3)
@@ -222,27 +235,23 @@ class BinaryTreeTest < Minitest::Test
   end
 
   def test_load_return
-    skip
-    assert_equal 15, tree.load('testing_sample.txt')
+    assert_equal 15, tree.load('/Users/maxwell/turing/1module/bst/lib/testing_sample.txt')
   end
 
   def test_load_max
-    skip
-    tree.load('testing_sample.txt')
-    assert_equal tree.max, 100
+    tree.load('/Users/maxwell/turing/1module/bst/lib/testing_sample.txt')
+    assert_equal 100, tree.max
   end
 
   def test_load_min
-    skip
-    tree.load('testing_sample.txt')
+    tree.load('/Users/maxwell/turing/1module/bst/lib/testing_sample.txt')
     assert_equal tree.min, 1
   end
 
   def test_load_insert
-    skip
-    tree.load('testing_sample.txt')
+    tree.load('/Users/maxwell/turing/1module/bst/lib/testing_sample.txt')
     tree.insert(100000)
-    assert_equal true, include?(100000)
+    assert_equal true, tree.include?(100000)
   end
 
 end

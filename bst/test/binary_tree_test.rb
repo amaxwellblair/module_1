@@ -276,7 +276,6 @@ class BinarySearchTreeTest < Minitest::Test
   end
 
   def test_leaves_two
-    skip
     tree.insert(2)
     tree.insert(1)
     tree.insert(3)
@@ -284,7 +283,7 @@ class BinarySearchTreeTest < Minitest::Test
   end
 
   def test_leaves_three
-    skip
+
     tree.insert(4)
     tree.insert(2)
     tree.insert(3)
@@ -294,20 +293,62 @@ class BinarySearchTreeTest < Minitest::Test
     assert_equal 3, tree.leaves
   end
 
+  def test_leaves_nil
+    assert_equal nil, tree.leaves
+  end
+
+  def test_height_zero_with_root
+    tree.insert(1)
+    assert_equal 0, tree.height
+  end
+
+  def test_height_one
+    tree.insert(2)
+    tree.insert(1)
+    assert_equal 1, tree.height
+  end
+
+  def test_height_two
+    tree.insert(2)
+    tree.insert(1)
+    tree.insert(3)
+    assert_equal 1, tree.height
+  end
+
+  def test_height_three
+    tree.insert(4)
+    tree.insert(2)
+    tree.insert(3)
+    tree.insert(5)
+    tree.insert(6)
+    tree.insert(1)
+    assert_equal 2, tree.height
+  end
+
+  def test_delete_root_return
+    skip
+    tree.insert(4)
+    assert_equal 4, tree.delete(4)
+  end
+
+  def test_delete_root
+    skip
+    tree.insert(4)
+    tree.delete(4)
+    assert_equal nil, tree.rootie
+  end
+
+  def test_delete_node
+    skip
+    tree.insert(4)
+    tree.insert(3)
+    tree.insert(5)
+    tree.insert(1)
+    tree.delete(1)
+    assert_equal nil, tree.include?(1)
+  end
+
   #refactor tests
-
-  def test_insert_same_raise
-    skip
-    tree.insert(4)
-    assert_raises(StandardError) {tree.insert(4)}
-  end
-
-  def test_insert_same_raise_message
-    skip
-    tree.insert(4)
-    exception = tree.insert(4)
-    assert_equal "Data inserted already on tree", exception.message
-  end
 
   def test_insert_alpha
     tree.insert("a")
@@ -324,6 +365,17 @@ class BinarySearchTreeTest < Minitest::Test
   end
 
 
+  def test_insert_same_raise
+    skip
+    tree.insert(4)
+    assert_raises(StandardError) {tree.insert(4)}
+  end
 
+  def test_insert_same_raise_message
+    skip
+    tree.insert(4)
+    exception = tree.insert(4)
+    assert_equal "Data inserted already on tree", exception.message
+  end
 
 end

@@ -1,47 +1,47 @@
-$LOAD_PATH.unshift("~/turing/1module/bst/lib/")  # => ["~/turing/1module/bst/lib/", "/Users/maxwell/.rvm/gems/ruby-2.2.1/gems/seeing_is_believing-3.0.0.beta.6/lib", "/Users/maxwell/.rvm/gems/ruby-2.2.1/gems/seeing_is_believing-3.0.0.beta.6/lib", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/site_ruby/2.2.0", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/site_ruby/2.2.0/x86_64-darwin14", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/site_ruby", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/vendor_ruby/2.2.0", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/vendor_ruby/2.2.0/x86_64-darwin14", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/vendor_ruby", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0", "/Users/maxwell/.rvm/rubies/ruby-2.2.1/lib/ruby/2.2.0/x86_64-darwin14"]
+$LOAD_PATH.unshift("~/turing/1module/bst/lib/")
 
-require 'pry'  # => true
+require 'pry'
 
 class BinarySearchTree
-  attr_accessor :rootie, :type  # => nil
+  attr_accessor :rootie, :type, :leaves, :height
 
   def initialize
-    @rootie = nil  # => nil
-  end              # => :initialize
+    @rootie = nil
+    @leaves = nil
+    @height = nil
+  end
 
   def insert(data, node = rootie)
-    if empty?                                   # => true, false
-      @rootie = create_node(data)               # => #<struct Struct::Node data=2, left=nil, right=nil>
-      @type = data.class                        # => Fixnum
-    elsif not_type?(data)                       # => false
-      # raise StandardError.new("Data inserted is of a different type")
+    if empty?
+      first_insert(data)
+    elsif not_type?(data)
       puts "Data inserted is a different type"
-    elsif include?(data)                        # => false
-      # raise StandardError.new("Data inserted already on tree")
+    elsif include?(data)
       puts "Data inserted already on tree"
     else
-      if node.data > data                       # => true
-        insert_left(data, node)                 # => #<struct Struct::Node data=1, left=nil, right=nil>
+      node_leaf?(node) ? @leaves -= 1 : nil
+      if node.data > data
+        insert_left(data, node)
       elsif node.data < data
         insert_right(data, node)
-      end                                       # => #<struct Struct::Node data=1, left=nil, right=nil>
-    end                                         # => Fixnum, #<struct Struct::Node data=1, left=nil, right=nil>
-  end                                           # => :insert
+      end
+    end
+  end
 
   def include?(data, node = rootie)
-    if prep_check?(data)                           # => nil
+    if prep_check?(data)
       return nil
     elsif
-      node.data == data                            # => false
+      node.data == data
       return true
-    elsif node.data > data && !empty?(node.left)   # => false
+    elsif node.data > data && !empty?(node.left)
       include?(data, node.left)
-    elsif node.data < data && !empty?(node.right)  # => false
+    elsif node.data < data && !empty?(node.right)
       include?(data, node.right)
     else
-      return false                                 # => false
+      return false
     end
-  end                                              # => :include?
+  end
 
   def depth_of(data, count = -1, node = rootie)
     count += 1
@@ -56,7 +56,7 @@ class BinarySearchTree
     else
       return nil
     end
-  end                                              # => :depth_of
+  end
 
   def sort(arr = [], node = rootie)
     # binding.pry
@@ -74,7 +74,7 @@ class BinarySearchTree
       arr << node.data
     end
     arr
-  end                                                # => :sort
+  end
 
   def load(file_extension)
     count = 0
@@ -87,49 +87,33 @@ class BinarySearchTree
       end
     end
     return count
-  end                                                             # => :load
-
-  def leaves(node = rootie, count = 0)
-    if empty?(rootie)                                # => false, false
-      return nil
-    elsif !empty?(node.left) || !empty?(node.right)  # => true, false
-      if !empty?(node.left)                          # => true
-        leaves(node.left, count)                     # => 1
-      end                                            # => 1
-      if !empty?(node.right)                         # => false
-        leaves(node.right, count)
-      end                                            # => nil
-    else
-      count += 1                                     # => 1
-    end
-    count                                            # => 1, 0
-  end                                                # => :leaves
+  end
 
   def root
     rootie.data
-  end            # => :root
+  end
 
   def max
     max_node.data
-  end              # => :max
+  end
 
   def min
     min_node.data
-  end              # => :min
+  end
 
-  private  # => BinarySearchTree
+  private
 
   def prep_check?(data)
-    if empty?              # => false
+    if empty?
       return true
-    elsif not_type?(data)  # => false
+    elsif not_type?(data)
       return true
     end
-  end                      # => :prep_check?
+  end
 
   def empty?(node = rootie)
-    node == nil ? true : false  # => true, false, false, true, true, false, false, false, false, true, true, true
-  end                           # => :empty?
+    node == nil ? true : false
+  end
 
   def max_node(node = rootie)
     if empty?(node.right)
@@ -137,7 +121,7 @@ class BinarySearchTree
     else
       max_node(node.right)
     end
-  end                          # => :max_node
+  end
 
   def min_node(node = rootie)
     if empty?(node.left)
@@ -145,40 +129,60 @@ class BinarySearchTree
     else
       min_node(node.left)
     end
-  end                          # => :min_node
-
+  end
 
   def insert_left(data, node)
-    if empty?(node.left)             # => true
-      node.left = create_node(data)  # => #<struct Struct::Node data=1, left=nil, right=nil>
+    if empty?(node.left)
+      node.left = create_node(data)
+      @leaves += 1
+      max_height(data)
     else
       insert(data, node.left)
-    end                              # => #<struct Struct::Node data=1, left=nil, right=nil>
-  end                                # => :insert_left
+    end
+  end
 
   def insert_right(data, node)
     if empty?(node.right)
       node.right = create_node(data)
+      @leaves += 1
+      max_height(data)
     else
       insert(data, node.right)
     end
-  end                                 # => :insert_right
+  end
+
+  def first_insert(data)
+    @rootie = create_node(data)
+    @type = data.class
+    @leaves = 1
+    @height = 0
+  end
+
+  def max_height(data)
+    if depth_of(data) > height
+      @height = depth_of(data)
+    end
+  end
 
   def not_type?(data)
-    data.class != type ? true : false  # => false, false
-  end                                  # => :not_type?
+    data.class != type ? true : false
+  end
 
+  def node_leaf?(node)
+    node.right == nil && node.left == nil ? true : false
+  end
 
-  Struct.new("Node", :data, :left, :right)  # => Struct::Node
+  Struct.new("Node", :data, :left, :right)
 
   def create_node(data, left = nil, right = nil)
-    Struct::Node.new(data, left, right)           # => #<struct Struct::Node data=2, left=nil, right=nil>, #<struct Struct::Node data=1, left=nil, right=nil>
-  end                                             # => :create_node
+    Struct::Node.new(data, left, right)
+  end
 
-end  # => :create_node
+end
 
 
-tree = BinarySearchTree.new  # => #<BinarySearchTree:0x007fda03a2c490 @rootie=nil>
-tree.insert(2)               # => Fixnum
-tree.insert(1)               # => #<struct Struct::Node data=1, left=nil, right=nil>
-tree.leaves                  # => 0
+tree = BinarySearchTree.new
+tree.insert(2)
+tree.insert(1)
+tree.insert(3)
+tree.leaves

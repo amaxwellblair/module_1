@@ -3,7 +3,7 @@ $LOAD_PATH.unshift("~/turing/1module/bst/lib/")
 require 'pry'
 
 class BinaryTree
-  attr_accessor :rootie
+  attr_accessor :rootie, :type
 
 
   def initialize
@@ -13,6 +13,13 @@ class BinaryTree
   def insert(data, node = rootie)
     if empty?
       @rootie = create_node(data)
+      @type = data.class
+    elsif not_type?(data)
+      # raise StandardError.new("Data inserted is of a different type")
+      puts "Data inserted is a different type"
+    elsif include?(data)
+      # raise StandardError.new("Data inserted already on tree")
+      puts "Data inserted already on tree"
     else
       if node.data > data
         insert_left(data, node)
@@ -23,14 +30,14 @@ class BinaryTree
   end
 
   def include?(data, node = rootie)
-    if empty?
+    if prep_check?(data)
       return nil
     elsif
       node.data == data
       return true
-    elsif node.data > data && node.left != nil
+    elsif node.data > data && !empty?(node.left)
       include?(data, node.left)
-    elsif node.data < data && node.right != nil
+    elsif node.data < data && !empty?(node.right)
       include?(data, node.right)
     else
       return false
@@ -39,13 +46,13 @@ class BinaryTree
 
   def depth_of(data, count = -1, node = rootie)
     count += 1
-    if empty?
+    if prep_check?(data)
       return nil
     elsif node.data == data
       return count
-    elsif node.data > data && node.left != nil
+    elsif node.data > data && !empty?(node.left)
       depth_of(data, count, node.left)
-    elsif node.data < data && node.right != nil
+    elsif node.data < data && !empty?(node.right)
       depth_of(data, count, node.right)
     else
       return nil
@@ -55,14 +62,14 @@ class BinaryTree
 
   def sort(arr = [], node = rootie)
     # binding.pry
-    if empty?
+    if empty?(rootie)
       return nil
-    elsif node.left != nil || node.right != nil
-      if node.left != nil
+    elsif !empty?(node.left) || !empty?(node.right)
+      if !empty?(node.left)
         sort(arr, node.left)
       end
       arr << node.data
-      if node.right != nil
+      if !empty?(node.right)
         sort(arr, node.right)
       end
     else
@@ -77,16 +84,23 @@ class BinaryTree
     File.open(file_extension) do |f|
       f.each do |line|
         no_new = line.chomp
-        if no_new =~ /[0-9]/
-          insert(no_new.to_i)
-        else
-          insert(no_new)
-        end
+        no_new =~ /[0-9]/ ? insert(no_new.to_i) : insert(no_new)
         count += 1
       end
     end
     return count
   end
+
+  def prep_check?(data)
+    if empty?
+      return true
+    elsif not_type?(data)
+      return true
+    end
+  end
+
+
+
 
   def root
     rootie.data
@@ -102,12 +116,12 @@ class BinaryTree
 
   private
 
-  def empty?
-    rootie == nil ? true : false
+  def empty?(node = rootie)
+    node == nil ? true : false
   end
 
   def max_node(node = rootie)
-    if node.right == nil
+    if empty?(node.right)
       return node
     else
       max_node(node.right)
@@ -115,7 +129,7 @@ class BinaryTree
   end
 
   def min_node(node = rootie)
-    if node.left == nil
+    if empty?(node.left)
       return node
     else
       min_node(node.left)
@@ -124,7 +138,7 @@ class BinaryTree
 
 
   def insert_left(data, node)
-    if node.left == nil
+    if empty?(node.left)
       node.left = create_node(data)
     else
       insert(data, node.left)
@@ -132,11 +146,15 @@ class BinaryTree
   end
 
   def insert_right(data, node)
-    if node.right == nil
+    if empty?(node.right)
       node.right = create_node(data)
     else
       insert(data, node.right)
     end
+  end
+
+  def not_type?(data)
+    data.class != type ? true : false
   end
 
 
@@ -145,6 +163,5 @@ class BinaryTree
   def create_node(data, left = nil, right = nil)
     Struct::Node.new(data, left, right)
   end
-
 
 end

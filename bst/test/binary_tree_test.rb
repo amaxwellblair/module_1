@@ -254,4 +254,79 @@ class BinaryTreeTest < Minitest::Test
     assert_equal true, tree.include?(100000)
   end
 
+  def test_load_insert
+    tree.load('/Users/maxwell/turing/1module/bst/lib/testing_sample.txt')
+    tree.insert("a")
+    assert_equal nil, tree.include?("a")
+  end
+
+  def test_leaves_zero
+    skip
+    assert_equal 0, tree.leaves
+  end
+
+  def test_leaves_zero_with_root
+    skip
+    tree.insert(1)
+    assert_equal 0, tree.leaves
+  end
+
+  def test_leaves_one
+    skip
+    tree.insert(2)
+    tree.insert(1)
+    assert_equal 1, tree.leaves
+  end
+
+  def test_leaves_two
+    skip
+    tree.insert(2)
+    tree.insert(1)
+    tree.insert(3)
+    assert_equal 2, tree.leaves
+  end
+
+  def test_leaves_three
+    skip
+    tree.insert(4)
+    tree.insert(2)
+    tree.insert(3)
+    tree.insert(5)
+    tree.insert(6)
+    tree.insert(1)
+    assert_equal 3, tree.leaves
+  end
+
+  #refactor tests
+
+  def test_insert_same_raise
+    skip
+    tree.insert(4)
+    assert_raises(StandardError) {tree.insert(4)}
+  end
+
+  def test_insert_same_raise_message
+    skip
+    tree.insert(4)
+    exception = tree.insert(4)
+    assert_equal "Data inserted already on tree", exception.message
+  end
+
+  def test_insert_alpha
+    tree.insert("a")
+    tree.insert("b")
+    tree.insert("c")
+    assert_equal true, tree.include?("a")
+  end
+
+  def test_insert_alpha_and_num
+    tree.insert("a")
+    tree.insert("b")
+    tree.insert(100000)
+    assert_equal "b", tree.max
+  end
+
+
+
+
 end

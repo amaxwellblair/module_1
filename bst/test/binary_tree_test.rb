@@ -406,6 +406,14 @@ class BinarySearchTreeTest < Minitest::Test
     assert_equal nil, tree.delete("a")
   end
 
+  def test_delete_node_equal_nil
+    tree.insert(4)
+    tree.insert(3)
+    tree.insert(5)
+    tree.insert(1)
+    assert_equal nil, tree.delete(100)
+  end
+
   #refactor tests
 
   def test_insert_alpha
@@ -421,5 +429,20 @@ class BinarySearchTreeTest < Minitest::Test
     tree.insert(100000)
     assert_equal "b", tree.max
   end
+
+  def test_insert_alpha_deep_right
+    tree.insert("a")
+    tree.insert("b")
+    tree.insert("c")
+    assert_equal true, tree.include?("b")
+  end
+
+  def test_insert_alpha_delete
+    tree.insert("a")
+    tree.insert("b")
+    tree.insert("c")
+    assert_equal 3, tree.insert("d")
+  end
+
 
 end

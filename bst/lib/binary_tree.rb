@@ -16,9 +16,9 @@ class BinarySearchTree
     if empty?
       first_insert(data)
     elsif not_type?(data)
-      puts "Data inserted is a different type"
+      puts "Data (#{data}) inserted is a different type"
     elsif include?(data)
-      puts "Data inserted already on tree"
+      puts "Data (#{data}) inserted already on tree"
     else
       node_leaf?(node) ? @leaves -= 1 : nil
       node.data > data ? insert_left(data, node) : insert_right(data, node)
@@ -40,6 +40,7 @@ class BinarySearchTree
   end
 
   def delete(data, node = rootie)
+    return nil if !include?(data)
     if prep_check?(data)
       return nil
     elsif rootie.data == data
@@ -225,11 +226,3 @@ class BinarySearchTree
   end
 
 end
-
-
-tree = BinarySearchTree.new
-tree.insert(2)
-tree.insert(1)
-tree.insert(3)
-tree.delete(3)
-tree.include?(3)

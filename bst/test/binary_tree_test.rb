@@ -26,6 +26,10 @@ class BinarySearchTreeTest < Minitest::Test
     assert_equal BinarySearchTree::Struct::Node, tree.rootie.class
   end
 
+  def test_create_node_return
+    assert_equal 0, tree.insert(2)
+  end
+
   def test_root_value
     tree.insert(2)
     assert_equal 2, tree.root
@@ -73,6 +77,20 @@ class BinarySearchTreeTest < Minitest::Test
     tree.insert(2)
     tree.insert(3)
     assert_equal 3, tree.rootie.right.data
+  end
+
+  def test_insert_node_right_return
+    tree.insert(2)
+    tree.insert(3)
+    assert_equal 2, tree.insert(4)
+  end
+
+  def test_insert_node_left_return
+    tree.insert(5)
+    tree.insert(7)
+    tree.insert(3)
+    tree.insert(4)
+    assert_equal 2, tree.insert(1)
   end
 
   def test_max_two
@@ -203,7 +221,6 @@ class BinarySearchTreeTest < Minitest::Test
   end
 
   def test_sort_two
-    skip
     tree.insert(5)
     tree.insert(4)
     assert_equal [4,5], tree.sort
@@ -326,26 +343,67 @@ class BinarySearchTreeTest < Minitest::Test
   end
 
   def test_delete_root_return
-    skip
     tree.insert(4)
     assert_equal 4, tree.delete(4)
   end
 
   def test_delete_root
-    skip
     tree.insert(4)
     tree.delete(4)
     assert_equal nil, tree.rootie
   end
 
-  def test_delete_node
-    skip
+  def test_delete_node_tail
     tree.insert(4)
     tree.insert(3)
     tree.insert(5)
     tree.insert(1)
     tree.delete(1)
-    assert_equal nil, tree.include?(1)
+    assert_equal false, tree.include?(1)
+  end
+
+  def test_delete_node_in_middle
+    tree.insert(4)
+    tree.insert(3)
+    tree.insert(5)
+    tree.insert(1)
+    tree.delete(5)
+    assert_equal false, tree.include?(5)
+  end
+
+  def test_delete_node_root
+    tree.insert(4)
+    tree.insert(3)
+    tree.insert(5)
+    tree.insert(1)
+    tree.delete(4)
+    assert_equal true, tree.include?(5)
+  end
+
+  def test_delete_node_root_equal
+    tree.insert(4)
+    tree.insert(3)
+    tree.insert(5)
+    tree.insert(1)
+    tree.delete(4)
+    assert_equal false, tree.include?(4)
+  end
+
+  def test_delete_node_leaf_equal
+    tree.insert(4)
+    tree.insert(3)
+    tree.insert(5)
+    tree.insert(1)
+    tree.delete(3)
+    assert_equal true, tree.include?(1)
+  end
+
+  def test_delete_node_leaf_equal
+    tree.insert(4)
+    tree.insert(3)
+    tree.insert(5)
+    tree.insert(1)
+    assert_equal nil, tree.delete("a")
   end
 
   #refactor tests
@@ -362,20 +420,6 @@ class BinarySearchTreeTest < Minitest::Test
     tree.insert("b")
     tree.insert(100000)
     assert_equal "b", tree.max
-  end
-
-
-  def test_insert_same_raise
-    skip
-    tree.insert(4)
-    assert_raises(StandardError) {tree.insert(4)}
-  end
-
-  def test_insert_same_raise_message
-    skip
-    tree.insert(4)
-    exception = tree.insert(4)
-    assert_equal "Data inserted already on tree", exception.message
   end
 
 end

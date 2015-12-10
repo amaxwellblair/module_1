@@ -11,7 +11,8 @@ class BinarySearchTree
     @height = nil
   end
 
-  def insert(data, node = rootie)
+  def insert(data, node = rootie, count = -1)
+    count += 1
     if empty?
       first_insert(data)
     elsif not_type?(data)
@@ -20,19 +21,14 @@ class BinarySearchTree
       puts "Data inserted already on tree"
     else
       node_leaf?(node) ? @leaves -= 1 : nil
-      if node.data > data
-        insert_left(data, node)
-      elsif node.data < data
-        insert_right(data, node)
-      end
+      node.data > data ? insert_left(data, node) : insert_right(data, node)
     end
   end
 
   def include?(data, node = rootie)
     if prep_check?(data)
       return nil
-    elsif
-      node.data == data
+    elsif node.data == data
       return true
     elsif node.data > data && !empty?(node.left)
       include?(data, node.left)
@@ -40,6 +36,22 @@ class BinarySearchTree
       include?(data, node.right)
     else
       return false
+    end
+  end
+
+  def delete(data, node = rootie)
+    if prep_check?(data)
+      return nil
+    elsif rootie.data == data
+      remove_root(data, node)
+    elsif node.left.data == data || node.right.data == data
+      remove_and_append(data, node)
+    elsif node.data > data && !empty?(node.left)
+      delete(data, node.left)
+    elsif node.data < data && !empty?(node.right)
+      delete(data, node.right)
+    else
+      return nil
     end
   end
 
@@ -59,7 +71,6 @@ class BinarySearchTree
   end
 
   def sort(arr = [], node = rootie)
-    # binding.pry
     if empty?(rootie)
       return nil
     elsif !empty?(node.left) || !empty?(node.right)
@@ -103,6 +114,39 @@ class BinarySearchTree
 
   private
 
+
+  def remove_root(data, node = rootie)
+    node_copy = node
+    @rootie = nil
+    append_links(node_copy)
+    return node_copy.data
+  end
+
+  def remove_and_append(data, node = rootie)
+    if node.left.data == data
+      node_copy = node.left
+      node.left = nil
+      append_links(node_copy)
+      return node_copy.data
+    elsif node.right.data == data
+      node_copy = node.right
+      node.right = nil
+      append_links(node_copy)
+      return node_copy.data
+    end
+  end
+
+  def append_links(node)
+    if !empty?(node.left)
+      insert(node.left.data)
+      append_links(node.left)
+    end
+    if !empty?(node.right)
+      insert(node.right.data)
+      append_links(node.right)
+    end
+  end
+
   def prep_check?(data)
     if empty?
       return true
@@ -136,6 +180,7 @@ class BinarySearchTree
       node.left = create_node(data)
       @leaves += 1
       max_height(data)
+      return depth_of(data)
     else
       insert(data, node.left)
     end
@@ -146,6 +191,7 @@ class BinarySearchTree
       node.right = create_node(data)
       @leaves += 1
       max_height(data)
+      return depth_of(data)
     else
       insert(data, node.right)
     end
@@ -185,4 +231,5 @@ tree = BinarySearchTree.new
 tree.insert(2)
 tree.insert(1)
 tree.insert(3)
-tree.leaves
+tree.delete(3)
+tree.include?(3)

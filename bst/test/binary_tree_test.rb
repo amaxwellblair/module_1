@@ -252,7 +252,7 @@ class BinarySearchTreeTest < Minitest::Test
   end
 
   def test_load_return
-    assert_equal 15, tree.load('/Users/maxwell/turing/1module/bst/lib/testing_sample.txt')
+    assert_equal 14, tree.load('/Users/maxwell/turing/1module/bst/lib/testing_sample.txt')
   end
 
   def test_load_max

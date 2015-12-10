@@ -94,8 +94,13 @@ class BinarySearchTree
     File.open(file_extension) do |f|
       f.each do |line|
         no_new = line.chomp
-        no_new =~ /[0-9]/ ? insert(no_new.to_i) : insert(no_new)
-        count += 1
+        if no_new =~ /[0-9]/
+          x = insert(no_new.to_i)
+          x != nil ? count += 1 : nil
+        else
+          x = insert(no_new)
+          x != nil ? count += 1 : nil
+        end
       end
     end
     return count
